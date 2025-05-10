@@ -5,14 +5,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 
 public class ReadFile {
 
     public static void main(String[] args) throws IOException {
+        //To Run the code from command line
+        if (args.length == 0) {
+            System.out.println("Please provide the image file path as an argument.");
+            System.exit(1); // Exit if no argument is passed
+        }
+
+        String imagePath = args[0];  // Get the image file path from the command-line argument
+
         //This class will read the Image file
-        File imagefile = new File("src/main/resources/pineapple.jpeg");
+        //File imagefile = new File("src/main/resources/pineapple.jpeg");
+        File imagefile = new File(imagePath);
 
         ArrayList<ArrayList<int []>> colorInfo = new ArrayList<>();
 
@@ -71,44 +78,6 @@ public class ReadFile {
                 System.out.println();
             count++;
         }
-
-
-//        int count = 0;
-//        // Create a PrintWriter to write to the text file
-//        try (PrintWriter writer = new PrintWriter(new File("output.txt"))) {
-//            // Loop through avgColor and print to both console and file
-//            while (count < avgColor.length) {
-//                double val = avgColor[count] / 3.92;
-//                int num = (int) Math.ceil(val);
-//
-//                // Write the characters to the file
-//                writer.print(characters.charAt(num));
-//                writer.print(characters.charAt(num));
-//                writer.print(characters.charAt(num));
-//
-//                // Add a new line to the file if necessary
-//                if ((count + 1) % imageWidth == 0) {
-//                    writer.println();
-//                }
-//
-//                count++;
-//            }
-//            System.out.println("ASCII art saved to output.txt");
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
-//        for (int y = 0; y < colorInfo.size(); y++) {
-//            System.out.print("Row " + y + ": ");
-//            for (int[] rgb : colorInfo.get(y)) {
-//                System.out.print(Arrays.toString(rgb) + " ");
-//            }
-//            System.out.println();  // line break after each row
-//        }
-
-//        while ( i < (imageHeight * imageWidth))
-//            System.out.print(Arrays.toString(avgColor) + " ");
 
     }
 }
