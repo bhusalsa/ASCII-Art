@@ -15,12 +15,55 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-imaging</artifactId>
             <version>1.0.0-alpha6</version>
         </dependency>
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Disable the maven-jar-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <phase>none</phase> <!-- Disable the execution of the JAR plugin -->
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- The Maven Shade Plugin to create a shaded JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <finalName>ASCII.ART-1.0-SNAPSHOT</finalName> <!-- Final JAR name -->
+                    <createDependencyReducedPom>false</createDependencyReducedPom> <!-- Optional -->
+                   <transformers>
+                       <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                           <manifestEntries>
+                               <Main-Class>ReadFile</Main-Class> <!-- Set the Main-Class here -->
+                           </manifestEntries>
+                       </transformer>
+                   </transformers>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>  <!-- Bind to the package phase -->
+                        <goals>
+                            <goal>shade</goal> <!-- Shading goal to bundle dependencies -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>
