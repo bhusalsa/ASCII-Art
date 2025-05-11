@@ -1,6 +1,7 @@
 import org.apache.commons.imaging.ImageInfo;
 import org.apache.commons.imaging.Imaging;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,10 +17,10 @@ public class ReadFile {
         }
 
         String imagePath = args[0];  // Get the image file path from the command-line argument
+        File imagefile = new File(imagePath);
 
         //This class will read the Image file
-        //File imagefile = new File("src/main/resources/pineapple.jpeg");
-        File imagefile = new File(imagePath);
+//        File imagefile = new File("src/main/resources/mediumPineapple.jpeg");
 
         ArrayList<ArrayList<int []>> colorInfo = new ArrayList<>();
 
@@ -30,17 +31,31 @@ public class ReadFile {
         int imageWidth = imageInfo.getWidth();
         int imageHeight = imageInfo.getHeight();
 
-        avgColor = new int[imageHeight * imageWidth];
+        // Define new dimensions for resizing
+        int newWidth = 470;
+        int newHeight = 290;
 
-        System.out.println("Image Dimensions:");
-        System.out.println("Image Width: " + imageWidth + "\nImage Height: " + imageHeight);
+        // Read the original image
+        BufferedImage originalImage = Imaging.getBufferedImage(imagefile);
 
-        BufferedImage bufferedImage = Imaging.getBufferedImage(imagefile);
+        // Resize the original image
+        BufferedImage bufferedImage = new BufferedImage(newWidth, newHeight, originalImage.getType());
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+        g.dispose(); // Release resources used by Graphics2D
+
+       // avgColor = new int[imageHeight * imageWidth];
+        avgColor = new int[newHeight * newWidth];
+
+        //System.out.println("Image Dimensions: " + imageWidth + "x" + imageHeight);
+        //System.out.println("Image Dimensions: " + newWidth + "x" + newHeight);
+
+        //BufferedImage bufferedImage = Imaging.getBufferedImage(imagefile);
 
         int  i = 0 ;
-        for( int y = 0; y < imageHeight; y++){
+        for( int y = 0; y < newHeight; y++){
             ArrayList<int[]> color = new ArrayList<>();
-            for( int x = 0; x < imageWidth; x++){
+            for( int x = 0; x < newWidth; x++){
 
                 int rgb = bufferedImage.getRGB(x,y);
 
@@ -72,11 +87,12 @@ public class ReadFile {
             double val = avgColor[count]/3.92;
             int num = (int) Math.ceil(val);
             System.out.print(characters.charAt(num));
-//            System.out.print(characters.charAt(num));
-//            System.out.print(characters.charAt(num));
-            if (count % imageWidth == 0)
-                System.out.println();
+            System.out.print(characters.charAt(num));
+            System.out.print(characters.charAt(num));
             count++;
+            if (count % newWidth == 0)
+                System.out.println();
+
         }
 
     }
